@@ -2,6 +2,8 @@
 //initialize function called when the script loads
 function initialize(){
     cities();
+   // debugCallback(); //I don't think I need this
+    debugAjax();
 };
 
 function cities(){
@@ -64,7 +66,6 @@ function cities(){
     
     //function to add a column to my table
     function addColumns(cityPop){
-       console.log("Is this working?")
         //loop to add a new column to each city row
         document.querySelectorAll("tr").forEach(function(row, i){  
         //add column header to first row in table
@@ -90,12 +91,12 @@ function cities(){
     })
 };
 
-//funtion to add random color on mouseover and clickeme events to the table
-function addEvents(){
-    //select the table element
-    table = document.querySelector("table");
-    //add mouseover random color event
-	document.querySelector("table").addEventListener("mouseover", function(){
+//funtion to add random color on mouseover and clickme events to the table
+    function addEvents(){
+        //select the table element
+        table = document.querySelector("table");
+        //add mouseover random color event
+	   document.querySelector("table").addEventListener("mouseover", function(){
 		var color = "rgb(";
         //generate random color by selecting a random number 3 times
 		for (var i=0; i<3; i++){
@@ -125,7 +126,29 @@ function addEvents(){
 };
     addColumns(cityPop);
     addEvents(cityPop);
-}; 
+}
 
+//DEBUG CODE BEGINS HERE...I don't think this first function is in the right place
+//function debugCallback(response){
+	//document.querySelector("#mydiv").insertAdjacentHTML('beforeend', 'GeoJSON data: ' + JSON.stringify(myData))
+//};
+
+//define fetch request
+function debugAjax(){
+	//define variable to hold the data
+	var myData;
+	//use fetch to retrieve data
+	fetch("data/MegaCities.geojson")
+		.then(function(response){
+			return response.json();
+		})
+    //converting callback response with anonymous call back function
+        .then(function(response){
+            myData = response;
+        //links the GeoJSON file to my index file to display on webpage
+              document.querySelector("#mydiv").insertAdjacentHTML('beforeend', '<br>GeoJSON data:<br>' + JSON.stringify(myData))
+        })
+};
 //call the initialize function when the window has loaded
 window.onload = initialize();
+window.onload = debugAjax();
